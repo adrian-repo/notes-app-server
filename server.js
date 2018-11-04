@@ -18,7 +18,7 @@ app.use (bodyParser.json());
 app.use (cors());
 
 app.get ('/', (req,res) => {
-            res.json ("it is working");
+        db('users').returning('*').then(response => res.status(200).json(response));
 });
 
 
