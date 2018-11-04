@@ -18,7 +18,7 @@ app.use (bodyParser.json());
 app.use (cors());
 
 app.get ('/', (req,res) => {
-        db('users').returning('*').then(response => res.status(200).json(response));
+        db('public.users').returning('*').then(response => res.status(200).json(response));
 });
 
 
@@ -50,12 +50,12 @@ app.post ('/register', (req,res) => {
     const { name, email, password} = req.body;
     const salt = bcrypt.genSaltSync(5);
     const hash = bcrypt.hashSync(password, salt);
-    db('users').returning('*').where({ email : email }).then(response => {
+    db('public.users').returning('*').where({ email : email }).then(response => {
         if (response.length > 0) {
             res.status(406).json ("user exists");
             console.log('SERVER SIDE MSG: user exists !')
         } else {
-            db('users').insert({
+            db('public.users').insert({
                 name: name,
                 email: email,
                 password: hash
